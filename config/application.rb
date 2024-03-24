@@ -16,6 +16,10 @@ module App
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
 
+    config.action_dispatch.default_headers = {
+      'Content-Security-Policy' => "frame-ancestors *"
+    }
+
     def base_url
       ENV["BASE_URL"]
     end
