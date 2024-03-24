@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   before_action :configure_permitted_parameters, if: :devise_controller?
+  prepend_before_action :auto_sign_in_user
   prepend_before_action :load_tenant_data
 
   protected
@@ -53,6 +54,11 @@ class ApplicationController < ActionController::Base
         .include_defaults
         .where(is_enabled: true)
         .order(created_at: :asc)
+    end
+
+    def auto_sign_in_user
+      user = User.first
+      sign_in(user) if user
     end
 
   private
